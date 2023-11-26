@@ -1,0 +1,15 @@
+{
+  "projects": {
+    "default": "segway-assistent"
+  },
+  "targets": {
+    "segway-assistent": {
+      "hosting": {
+        "seguetomeeting": [
+          "seguetomeeting"
+        ]
+      }
+    }
+  },
+  "etags": {}
+}

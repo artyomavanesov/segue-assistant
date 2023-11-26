@@ -1,0 +1,29 @@
+@import '../../theme';
+
+.component {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background: white;
+}
+
+@keyframes pulse {
+  0% { opacity: 1; }
+  35% { opacity: 0.25; }
+}
+
+.idle { background: var(--color-secondary-2); }
+
+.initiating {
+  background: var(--color-secondary-2);
+  animation: pulse 2s infinite;
+}
+
+.active { background: var(--color-secondary-1); }
+
+.loading {
+  background: var(--color-secondary-1);
+  animation: pulse 1s infinite;
+}
+
+.error { background: var(--color-secondary-3); }

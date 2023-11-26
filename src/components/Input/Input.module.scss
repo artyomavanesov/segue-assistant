@@ -1,0 +1,11 @@
+@import '../../theme';
+
+.component {
+  @include font-family();
+  @include font-size(large);
+  @include font-weight(bold);
+  @include font-color(primary2);
+  
+  &:hover::placeholder { opacity: 0.5; }
+  &:focus::placeholder { opacity: 0; }
+}

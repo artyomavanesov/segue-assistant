@@ -1,0 +1,24 @@
+$sizes: (
+  tiny: 0.75rem,
+  small: 0.875rem,
+  regular: 1rem,
+  large: 2.5rem
+);
+
+$weights: (
+  regular: 400,
+  medium: 500,
+  bold: 600
+);
+
+$colors: (
+  primary1: var(--color-primary-1),
+  primary2: var(--color-primary-2),
+  gray1: var(--color-gray-1),
+  gray2: var(--color-gray-2)
+);
+
+@mixin font-family($family: "Poppins") { font-family: $family, sans-serif; }
+@mixin font-size($size) { font-size: map-get($sizes, $size); }
+@mixin font-weight($weight) { font-weight: map-get($weights, $weight); }
+@mixin font-color($color) { color: map-get($colors, $color); }

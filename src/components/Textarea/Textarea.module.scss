@@ -1,0 +1,31 @@
+@import '../../theme/';
+
+.component {
+  display: grid;
+
+  .label {
+    @include font-size(tiny);
+    @include font-weight(bold);
+    @include font-color(primary1);
+    margin-bottom: 0.25rem;
+    text-transform: uppercase;
+  }
+  
+  .textarea {
+    @include transition();
+    @include font-family();
+    @include font-size(regular);
+    @include font-weight(regular);
+    @include font-color(primary2);
+    padding: 0.75rem 1rem;
+    border-radius: 0.25em;
+    box-shadow: 0 0 0 1px var(--color-primary-1);
+  
+    &:hover { background: var(--color-gray-5); }
+  
+    &:focus {
+      background: none;
+      box-shadow: 0 0 0 3px var(--color-primary-1);
+    }
+  }
+}

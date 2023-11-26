@@ -1,0 +1,59 @@
+@import './theme';
+
+.app {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr minmax(0, 40rem) minmax(0, 40rem) 1fr;
+  grid-template-rows: 2rem 1fr 2rem;
+  box-sizing: border-box;
+  height: 100vh;
+  padding: 0.5rem 1rem;
+
+  .messageForm, .response {
+    grid-column: 2 / 4;
+    grid-row: 2 / 3;
+    display: inherit;
+    align-self: center;
+  }
+
+  .response {
+    @include font-size(large);
+    @include font-weight(bold);
+    @include font-color(primary2);
+  }
+  
+  @keyframes inputLoading {
+    0% { opacity: 1; }
+    100% { opacity: 0.25; }
+  }
+
+  .inputLoading { animation: 1s ease-in-out infinite alternate inputLoading; }
+
+  .pulse {
+    @include font-size(tiny);
+    @include font-color(primary2);
+    grid-column: 1 / -1;
+    grid-row: 3 / 4;
+    display: inherit;
+    grid-auto-flow: column;
+    column-gap: 0.5rem;
+    justify-content: start;
+    align-items: center;
+  }
+
+  .githubLink {
+    grid-column: 4 / -1;
+    grid-row: 3 / 4;
+    display: inherit;
+    justify-self: end;
+
+    .githubImage {
+      @include transition(0.1s);
+      width: 1.5rem;
+      height: 1.5rem;
+      opacity: 0.5;
+
+      &:hover { opacity: 1; }
+    }
+  }
+}
