@@ -12,18 +12,18 @@
   35% { opacity: 0.25; }
 }
 
-.idle { background: var(--color-secondary-2); }
+.stateIdle { background: var(--color-3-2); }
 
-.initiating {
-  background: var(--color-secondary-2);
+.stateInitiating {
+  background: var(--color-3-2);
   animation: pulse 2s infinite;
 }
 
-.active { background: var(--color-secondary-1); }
+.stateActive { background: var(--color-3-1); }
 
-.loading {
-  background: var(--color-secondary-1);
-  animation: pulse 1s infinite;
+.stateLoading {
+  background: var(--color-3-1);
+  animation: pulse 2s infinite;
 }
 
-.error { background: var(--color-secondary-3); }
+.stateError { background: var(--color-3-3); }

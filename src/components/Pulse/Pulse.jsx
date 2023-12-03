@@ -7,11 +7,11 @@ export const Pulse = (props) => {
   const { session } = props;
 
   const style = classNames(styles.component, {
-    [styles.idle]: !session.assistantMessage && !session.isLoading,
-    [styles.initiating]: !session.assistantMessage && session.isLoading,
-    [styles.active]: session.assistantMessage && !session.isLoading,
-    [styles.loading]: session.assistantMessage && session.isLoading,
-    [styles.error]: session.error
+    [styles.stateIdle]: !session.assistantMessage && !session.isLoading,
+    [styles.stateInitiating]: !session.assistantMessage && session.isLoading,
+    [styles.stateActive]: session.assistantMessage && !session.isLoading,
+    [styles.stateLoading]: session.assistantMessage && session.isLoading,
+    [styles.stateError]: session.error
   });
 
   return <div className={style} />;

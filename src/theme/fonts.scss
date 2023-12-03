@@ -12,10 +12,12 @@ $weights: (
 );
 
 $colors: (
-  primary1: var(--color-primary-1),
-  primary2: var(--color-primary-2),
-  gray1: var(--color-gray-1),
-  gray2: var(--color-gray-2)
+  11: var(--color-1-1),
+  12: var(--color-1-2),
+  21: var(--color-2-1),
+  22: var(--color-2-2),
+  09: var(--color-0-9),
+  010: var(--color-0-10)
 );
 
 @mixin font-family($family: "Poppins") { font-family: $family, sans-serif; }

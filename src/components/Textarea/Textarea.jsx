@@ -14,6 +14,7 @@ export const Textarea = (props) => {
         onChange={(event) => onChange(event.target.value)}
         placeholder={placeholder}
         rows={rows}
+        spellCheck="false"
         type={type}
         value={value}
       />

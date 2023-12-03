@@ -6,7 +6,7 @@
   .label {
     @include font-size(tiny);
     @include font-weight(bold);
-    @include font-color(primary1);
+    @include font-color(09);
     margin-bottom: 0.25rem;
     text-transform: uppercase;
   }
@@ -16,16 +16,19 @@
     @include font-family();
     @include font-size(regular);
     @include font-weight(regular);
-    @include font-color(primary2);
+    @include font-color(010);
+    box-sizing: border-box;
+    width: 100%;
     padding: 0.75rem 1rem;
+    border: 1px solid var(--color-0-8);
     border-radius: 0.25em;
-    box-shadow: 0 0 0 1px var(--color-primary-1);
+    background: var(--color-2-2);
   
-    &:hover { background: var(--color-gray-5); }
+    &:hover { background: var(--color-0-6); }
   
     &:focus {
-      background: none;
-      box-shadow: 0 0 0 3px var(--color-primary-1);
+      background: var(--color-2-1);
+      box-shadow: 0 0 0 2px var(--color-1-2);
     }
   }
 }

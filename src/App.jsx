@@ -3,83 +3,85 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import styles from './App.module.scss';
-import imgGithub from './assets/github-light.png';
 import { Button, Input, Pulse, Textarea } from './components';
 import { getConfiguration, updateConfiguration } from './store/slices/configurationReducer.js';
 import { submitUserMessage } from './store/slices/sessionReducer.js';
-
-const initialState = { userMessage: '', configurationView: false };
 
 export const App = () => {
   const dispatch = useDispatch();
   const configuration = useSelector((state) => state.configuration);
   const session = useSelector((state) => state.session);
 
-  const [instructions, setInstructions] = useState(configuration.instructions);
-  const [userMessage, setUserMessage] = useState(initialState.userMessage);
-  const [configurationView, setConfigurationView] = useState(initialState.viewConfiguration);
+  const [instructions, setInstructions] = useState('');
+  const [userMessage, setUserMessage] = useState('');
+  const [viewConfiguration, setViewConfiguration] = useState(false);
 
   useEffect(() => {
     dispatch(getConfiguration());
   }, []);
 
   useEffect(() => {
-    setInstructions(configuration.instructions);
+    setInstructions(configuration.instructions || '');
   }, [configuration.instructions]);
 
   useEffect(() => {
-    session.assistantMessage && setUserMessage(initialState.userMessage);
+    session.assistantMessage && setUserMessage('');
   }, [session.assistantMessage]);
 
   const handleSubmitUserMessage = (event) => {
     event.preventDefault();
+    if (!userMessage || userMessage === session.userMessage) return;
     dispatch(submitUserMessage(userMessage));
   };
 
   const handleUpdateConfiguration = (event) => {
     event.preventDefault();
+    if (!instructions || instructions === configuration.instructions) return;
     dispatch(updateConfiguration(instructions));
-    setConfigurationView(initialState.viewConfiguration);
   };
 
-  const style = {
-    messageForm: classNames(styles.messageForm, { 
-      [styles.inputLoading]: session.isLoading
-    })
-  };
+  const userMessageFormClass = classNames(styles.userMessageForm, { 
+    [styles.inputStateLoading]: session.isLoading
+  });
+
+  if (!configuration.model) return;
   
   return (
     <div className={styles.app}>
-      {configurationView &&
+      <div className={styles.configuration}>
+        <Button
+          icon={viewConfiguration ? 'close' : 'configuration'}
+          onClick={() => setViewConfiguration((state) => !state)}
+          variant="icon"
+        />
+        {viewConfiguration && (
+          <form
+            className={styles.configurationView}
+            onSubmit={handleUpdateConfiguration}
+          >
+            <Textarea
+              label="Instructions"
+              onChange={setInstructions}
+              placeholder="Enter instructions"
+              rows="15"
+              type="text"
+              value={instructions}
+            />
+            <Button
+              disabled={configuration.isLoading}
+              isLoading={configuration.isLoading}
+              label="Save changes"
+              type="submit"
+            />
+          </form>
+        )}
+      </div>
+      {!session.assistantMessage ? (
         <form
-          className={styles.configuration}
-          id="configuration-form"
-          onSubmit={handleUpdateConfiguration}
-        >
-          <Textarea
-            form="configuration-form"
-            label="Instructions"
-            onChange={setInstructions}
-            placeholder="Enter instructions"
-            rows="15"
-            type="text"
-            value={instructions}
-          />
-          <Button
-            form="configuration-form"
-            label="Save changes"
-            type="submit"
-          />
-        </form>
-      }
-      {!session.assistantMessage ?
-        <form
-          className={style.messageForm}
-          id="user-message-form"
+          className={userMessageFormClass}
           onSubmit={handleSubmitUserMessage}
         >
           <Input
-            form="user-message-form"
             onChange={setUserMessage}
             placeholder="What are you talking about?"
             size="large"
@@ -87,22 +89,24 @@ export const App = () => {
             value={userMessage}
           />
         </form>
-      : <p className={styles.response}>{session.assistantMessage}</p>}
+      ) : (
+        <p className={styles.assistantResponse}>{session.assistantMessage}</p>
+      )}
       <div className={styles.pulse}>
         <Pulse session={session} />
         {`Model: ${configuration.model}`}
       </div>
-      <a
-        className={styles.githubLink}
-        href="https://github.com/artyomavanesov/segue-assistant"
-        target='_blank'
-      >
-        <img
-          alt="GitHub"
-          className={styles.githubImage}
-          src={imgGithub}
+      <div className={styles.github}>
+        <Button
+          icon="github"
+          onClick={() => window.open(
+            'https://github.com/artyomavanesov/segue-assistant',
+            '_blank',
+            'noopener, noreferrer'
+          )}
+          variant="icon"
         />
-      </a>
+      </div>
     </div>
   );
 };

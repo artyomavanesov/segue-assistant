@@ -1,14 +1,31 @@
 @import '../../theme';
 
 .component {
-  @include font-size(small);
-  @include font-weight(medium);
-  @include font-color(primary2);
-  padding: 0.375rem 0.75rem;
+  @include transition(0.1s);
   border-radius: 0.25rem;
-  background: var(--color-primary-1);
   cursor: pointer;
+  
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
 
-  &:hover { opacity: 0.9; }
-  &:disabled { opacity: 0.2; }
+.variantPrimary {
+  @include font-family();
+  @include font-size(small);
+  @include font-weight(bold);
+  @include font-color(22);
+  padding: 0.5rem;
+  background: var(--color-1-2);
+  
+  &:hover { opacity: 0.75; }
+}
+
+.variantIcon {
+  width: 1.5rem;
+  height: 1.5rem;
+  opacity: 0.5;
+
+  &:hover { opacity: 1; }
 }
