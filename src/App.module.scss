@@ -28,6 +28,7 @@
   .userMessageForm, .assistantResponse {
     grid-column: 2 / 3;
     grid-row: 2 / 3;
+    display: grid;
     align-self: center;
   }
 
