@@ -4,7 +4,7 @@
   @include font-family();
   @include font-size(large);
   @include font-weight(bold);
-  @include font-color(11);
+  @include font-color(primary1);
   
   &:hover::placeholder { opacity: 0.5; }
   &:focus::placeholder { opacity: 0; }

@@ -6,16 +6,17 @@ import { database } from '../../services/firebase';
 const initialState = {
   model: '',
   instructions: '',
-  temperature: '',
+  theme: '',
   isLoading: false,
   error: false
 };
 
-export const updateConfiguration = createAsyncThunk('configuration/updateConfiguration', async (instructions) => {
+export const updateConfiguration = createAsyncThunk('configuration/updateConfiguration', async (configuration) => {
   try {
     const configurationReference = doc(database, 'configuration', 'openai_generate_segway');
-    await updateDoc(configurationReference, { instructions });
-    return instructions;
+    const { instructions, theme } = configuration;
+    await updateDoc(configurationReference, { instructions, theme });
+    return configuration;
   } catch (error) {
     console.error(error);
     return error;
@@ -42,7 +43,7 @@ export const configurationReducer = createSlice({ name: 'configuration', initial
       const { payload } = action;
       state.model = payload.model;
       state.instructions = payload.instructions;
-      state.temperature = payload.temperature;
+      state.theme = payload.theme;
       state.isLoading = false;
     },
     [getConfiguration.rejected]: (state, action) => {
@@ -54,7 +55,9 @@ export const configurationReducer = createSlice({ name: 'configuration', initial
       state.error = false;
     },
     [updateConfiguration.fulfilled]: (state, action) => {
-      state.instructions = action.payload;
+      const { payload } = action;
+      state.instructions = payload.instructions;
+      state.theme = payload.theme;
       state.isLoading = false;
     },
     [updateConfiguration.rejected]: (state, action) => {
