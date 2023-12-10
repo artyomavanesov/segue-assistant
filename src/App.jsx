@@ -3,9 +3,10 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import styles from './App.module.scss';
-import { Button, Input, Pulse, Textarea } from './components';
+import { Button, Icon, Input, Pulse, Textarea } from './components';
 import { getConfiguration, updateConfiguration } from './store/slices/configurationReducer.js';
 import { submitUserMessage } from './store/slices/sessionReducer.js';
+import { textToSpeech } from './utilities/textToSpeech.js';
 
 export const App = () => {
   const dispatch = useDispatch();
@@ -13,6 +14,10 @@ export const App = () => {
   const session = useSelector((state) => state.session);
 
   const [instructions, setInstructions] = useState('');
+  
+  const [playAudio, setPlayAudio] = useState(false);
+  const [duration, setDuration] = useState(0);
+  
   const [userMessage, setUserMessage] = useState('');
   const [viewConfiguration, setViewConfiguration] = useState(false);
 
@@ -23,6 +28,10 @@ export const App = () => {
   useEffect(() => {
     setInstructions(configuration.instructions || '');
   }, [configuration.instructions]);
+
+  useEffect(() => {
+    playAudio && textToSpeech(playAudio, 'The Audio API provides a speech endpoint based on our TTS');
+  }, [playAudio]);
 
   useEffect(() => {
     session.assistantMessage && setUserMessage('');
@@ -88,9 +97,18 @@ export const App = () => {
             type="text"
             value={userMessage}
           />
+          {/* <div
+            className={styles.audioControls}
+            onClick={() => setPlayAudio((state) => !state)}
+          >
+            <Icon
+              icon={playAudio ? 'stop' : 'play'}
+              color="2"
+            />
+          </div> */}
         </form>
       ) : (
-        <p className={styles.assistantResponse}>{session.assistantMessage}</p>
+          <p className={styles.assistantResponse}>{session.assistantMessage}</p>
       )}
       <div className={styles.pulse}>
         <Pulse session={session} />
