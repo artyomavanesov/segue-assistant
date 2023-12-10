@@ -1,9 +1,9 @@
 import { openai } from '../services/openai';
 
-export const textToSpeech = async (play, content, duration) => {
+export const textToSpeech = async (assistantMessage) => {
   try {
     const response = await openai.audio.speech.create({
-      input: content,
+      input: assistantMessage,
       model: 'tts-1',
       voice: 'echo'
     });
@@ -11,8 +11,7 @@ export const textToSpeech = async (play, content, duration) => {
     const audioBlob = new Blob([arrayBuffer], { type: 'audio/mp3' });
     const audioUrl = URL.createObjectURL(audioBlob);
     const audioElement = new Audio(audioUrl);
-    play && audioElement.play();
-    return audioElement;
+    audioElement.play();
   } catch (error) {
     console.log(error);
   };

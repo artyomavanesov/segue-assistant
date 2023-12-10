@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import styles from './App.module.scss';
-import { Button, Icon, Input, Pulse, Textarea } from './components';
+import { Button, Input, Pulse, Textarea } from './components';
 import { getConfiguration, updateConfiguration } from './store/slices/configurationReducer.js';
 import { submitUserMessage } from './store/slices/sessionReducer.js';
 import { textToSpeech } from './utilities/textToSpeech.js';
@@ -13,11 +13,8 @@ export const App = () => {
   const configuration = useSelector((state) => state.configuration);
   const session = useSelector((state) => state.session);
 
+  const [audioPlayed, setAudioPlayed] = useState(false);
   const [instructions, setInstructions] = useState('');
-  
-  const [playAudio, setPlayAudio] = useState(false);
-  const [duration, setDuration] = useState(0);
-  
   const [userMessage, setUserMessage] = useState('');
   const [viewConfiguration, setViewConfiguration] = useState(false);
 
@@ -29,13 +26,11 @@ export const App = () => {
     setInstructions(configuration.instructions || '');
   }, [configuration.instructions]);
 
-  useEffect(() => {
-    playAudio && textToSpeech(playAudio, 'The Audio API provides a speech endpoint based on our TTS');
-  }, [playAudio]);
-
-  useEffect(() => {
-    session.assistantMessage && setUserMessage('');
-  }, [session.assistantMessage]);
+  const handlePlayAudio = () => {
+    if (audioPlayed) return;
+    setAudioPlayed(true);
+    textToSpeech(session.assistantMessage);
+  };
 
   const handleSubmitUserMessage = (event) => {
     event.preventDefault();
@@ -49,10 +44,15 @@ export const App = () => {
     dispatch(updateConfiguration(instructions));
   };
 
-  const userMessageFormClass = classNames(styles.userMessageForm, { 
-    [styles.inputStateLoading]: session.isLoading
-  });
-
+  const classes = {
+    userMessageForm: classNames(styles.userMessageForm, {
+      [styles.inputStateLoading]: session.isLoading
+    }),
+    assistantReponse: classNames(styles.assistantResponse, {
+      [styles.audioControlsPlay]: !audioPlayed
+    })
+  };
+  
   if (!configuration.model) return;
   
   return (
@@ -87,7 +87,7 @@ export const App = () => {
       </div>
       {!session.assistantMessage ? (
         <form
-          className={userMessageFormClass}
+          className={classes.userMessageForm}
           onSubmit={handleSubmitUserMessage}
         >
           <Input
@@ -97,18 +97,14 @@ export const App = () => {
             type="text"
             value={userMessage}
           />
-          {/* <div
-            className={styles.audioControls}
-            onClick={() => setPlayAudio((state) => !state)}
-          >
-            <Icon
-              icon={playAudio ? 'stop' : 'play'}
-              color="2"
-            />
-          </div> */}
         </form>
       ) : (
-          <p className={styles.assistantResponse}>{session.assistantMessage}</p>
+          <p
+            className={classes.assistantReponse}
+            onClick={handlePlayAudio}
+          >
+            {session.assistantMessage}
+          </p>
       )}
       <div className={styles.pulse}>
         <Pulse session={session} />

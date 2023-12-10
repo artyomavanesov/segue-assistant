@@ -8,7 +8,6 @@
   box-sizing: border-box;
   height: 100vh;
   padding: 1rem;
-  cursor: url('./assets/img_cursor.png'), auto;
 
   .configuration {
     position: absolute;
@@ -32,28 +31,13 @@
     align-self: center;
   }
 
-  // .userMessageForm {
-  //   .audioControls {
-  //     @include transition(0.2s);
-  //     display: grid;
-  //     justify-content: center;
-  //     align-items: center;
-  //     width: 4rem;
-  //     height: 4rem;
-  //     scale: 0.95;
-  //     border-radius: 50%;
-  //     background: var(--color-1-2);
-
-  //     &:hover { scale: 1; }
-  //     &:active { opacity: 0.9; }
-  //   }
-  // }
-
   .assistantResponse {
     @include font-size(large);
     @include font-weight(bold);
     @include font-color(11);
   }
+  
+  .audioControlsPlay { cursor: url('./assets/img_cursor_play.svg') 32 32, auto; }
   
   @keyframes inputLoading {
     0% { opacity: 1; }
