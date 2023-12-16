@@ -15,13 +15,42 @@
     
     .configurationView {
       display: grid;
-      row-gap: 1rem;
+      row-gap: 1.25rem;
       width: 20rem;
       margin-top: 0.25rem;
       padding: 1rem 1.25rem 1.25rem 1.25rem;
-      border: 1px solid var(--color-0-7);
+      border: 1px solid var(--color-0-9);
       border-radius: 0.5rem;
       background: var(--color-2-2);
+
+      .themeSelector {
+        display: grid;
+        grid-template-columns: 1fr repeat(4, auto);
+        column-gap: 0.5rem;
+        align-items: center;
+
+        .themeLabel {
+          @include font-size(tiny);
+          @include font-weight(bold);
+          @include font-color(gray1);
+          text-transform: uppercase;
+        }
+
+        .theme {
+          width: 1.5rem;
+          height: 1.5rem;
+          border: 2px solid var(--color-2-2);
+          border-radius: 50%;
+          cursor: pointer;
+        }
+
+        .themeStateSelected { box-shadow: 0 0 0 2px var(--color-0-11); }
+        
+        #theme1 { background: var(--color-4-1); }
+        #theme2 { background: var(--color-4-2); }
+        #theme3 { background: var(--color-4-3); }
+        #theme4 { background: var(--color-4-4); }
+      }
     }
   }
   
@@ -35,21 +64,21 @@
   .assistantResponse {
     @include font-size(large);
     @include font-weight(bold);
-    @include font-color(11);
+    @include font-color(primary1);
   }
   
   .audioControlsPlay { cursor: url('./assets/img_cursor_play.svg') 32 32, auto; }
   
   @keyframes inputLoading {
-    0% { opacity: 1; }
-    100% { opacity: 0.25; }
+    from { opacity: 1; }
+    to { opacity: 0.25; }
   }
 
   .inputStateLoading { animation: 1s ease-in-out infinite alternate inputLoading; }
 
   .pulse {
     @include font-size(tiny);
-    @include font-color(09);
+    @include font-color(gray1);
     grid-column: 1 / 3;
     grid-row: 3 / 4;
     align-self: end;

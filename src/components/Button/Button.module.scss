@@ -15,7 +15,7 @@
   @include font-family();
   @include font-size(small);
   @include font-weight(bold);
-  @include font-color(22);
+  @include font-color(secondary2);
   padding: 0.5rem;
   background: var(--color-1-2);
   
