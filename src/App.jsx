@@ -51,7 +51,7 @@ export const App = () => {
   
   const handleUpdateConfiguration = (event) => {
     event.preventDefault();
-    if (!instructions || !theme || (instructions === configuration.instructions && theme === configuration.theme)) return;
+    if (!instructions || (instructions === configuration.instructions && theme === configuration.theme)) return;
     const configurationDetails = { instructions, theme };
     dispatch(updateConfiguration(configurationDetails));
   };
