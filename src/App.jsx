@@ -6,7 +6,7 @@ import styles from './App.module.scss';
 import { Button, Input, Pulse, Textarea } from './components';
 import { getConfiguration, updateConfiguration } from './store/slices/configurationReducer.js';
 import { submitUserMessage } from './store/slices/sessionReducer.js';
-import { textToSpeech } from './utilities/textToSpeech.js';
+import { textToSpeech, themeSwitcher } from './utilities';
 
 export const App = () => {
   const dispatch = useDispatch();
@@ -15,6 +15,7 @@ export const App = () => {
 
   const [audioPlayed, setAudioPlayed] = useState(false);
   const [instructions, setInstructions] = useState('');
+  const [theme, setTheme] = useState('');
   const [userMessage, setUserMessage] = useState('');
   const [viewConfiguration, setViewConfiguration] = useState(false);
 
@@ -23,8 +24,13 @@ export const App = () => {
   }, []);
 
   useEffect(() => {
+    themeSwitcher(theme);
+  }, [theme]);
+
+  useEffect(() => {
     setInstructions(configuration.instructions || '');
-  }, [configuration.instructions]);
+    setTheme(configuration.theme || '');
+  }, [configuration.instructions, configuration.theme]);
 
   const handlePlayAudio = () => {
     if (audioPlayed) return;
@@ -32,17 +38,27 @@ export const App = () => {
     textToSpeech(session.assistantMessage);
   };
 
+  const handleViewConfiguration = () => {
+    setViewConfiguration((state) => !state);
+    theme !== configuration.theme && setTheme(configuration.theme);
+  };
+
   const handleSubmitUserMessage = (event) => {
     event.preventDefault();
     if (!userMessage || userMessage === session.userMessage) return;
     dispatch(submitUserMessage(userMessage));
   };
-
+  
   const handleUpdateConfiguration = (event) => {
     event.preventDefault();
-    if (!instructions || instructions === configuration.instructions) return;
-    dispatch(updateConfiguration(instructions));
+    if (!instructions || (instructions === configuration.instructions && theme === configuration.theme)) return;
+    const configurationDetails = { instructions, theme };
+    dispatch(updateConfiguration(configurationDetails));
   };
+
+  const getClassName = (index) => classNames(styles.theme, {
+    [styles.themeStateSelected]: theme === index
+  });
 
   const classes = {
     userMessageForm: classNames(styles.userMessageForm, {
@@ -50,7 +66,11 @@ export const App = () => {
     }),
     assistantReponse: classNames(styles.assistantResponse, {
       [styles.audioControlsPlay]: !audioPlayed
-    })
+    }),
+    theme1: getClassName(1),
+    theme2: getClassName(2),
+    theme3: getClassName(3),
+    theme4: getClassName(4)
   };
   
   if (!configuration.model) return;
@@ -60,7 +80,7 @@ export const App = () => {
       <div className={styles.configuration}>
         <Button
           icon={viewConfiguration ? 'close' : 'configuration'}
-          onClick={() => setViewConfiguration((state) => !state)}
+          onClick={handleViewConfiguration}
           variant="icon"
         />
         {viewConfiguration && (
@@ -72,10 +92,21 @@ export const App = () => {
               label="Instructions"
               onChange={setInstructions}
               placeholder="Enter instructions"
-              rows="15"
+              rows="12"
               type="text"
               value={instructions}
             />
+            <div className={styles.themeSelector}>
+              <span className={styles.themeLabel}>Theme</span>
+              {[1, 2, 3, 4].map((theme, index) => (
+                <div
+                  className={classes[`theme${theme}`]}
+                  id={styles[`theme${theme}`]}
+                  key={index}
+                  onClick={() => setTheme(theme)}
+                />
+              ))}
+            </div>
             <Button
               disabled={configuration.isLoading}
               isLoading={configuration.isLoading}
